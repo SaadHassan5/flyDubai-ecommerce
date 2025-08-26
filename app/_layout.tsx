@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { AppProvider } from '../src/store';
+import { ToastProvider } from '../src/components/common/ToastContext';
 import * as Linking from 'expo-linking';
 import { handleDeepLink } from '../src/utils/deepLinks';
 
@@ -68,19 +69,21 @@ function RootLayoutNav() {
 
   return (
     <AppProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-          <Stack.Screen 
-            name="product/[id]" 
-            options={{ 
-              headerShown: false,
-              presentation: 'card',
-            }} 
-          />
-        </Stack>
-      </ThemeProvider>
+      <ToastProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+            <Stack.Screen 
+              name="product/[id]" 
+              options={{ 
+                headerShown: false,
+                presentation: 'card',
+              }} 
+            />
+          </Stack>
+        </ThemeProvider>
+      </ToastProvider>
     </AppProvider>
   );
 }

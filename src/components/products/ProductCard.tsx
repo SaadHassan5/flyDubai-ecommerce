@@ -10,8 +10,9 @@ import {
 import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../constants/theme';
 import { Product } from '../../types';
 import { useResponsive } from '../../hooks/useResponsive';
-import { useFavorites } from '../../store';
+import { useFavorites, useApp } from '../../store';
 import { Icon } from '../common/Icon';
+import { useToast } from '../common/ToastContext';
 
 interface ProductCardProps {
   product: Product;
@@ -30,11 +31,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const { isMobile } = useResponsive();
   const favorites = useFavorites();
+  const { actions } = useApp();
+  const { showToast } = useToast();
 
   const handleFavoritePress = () => {
     if (onFavoritePress) {
       onFavoritePress(product.id);
     }
+  };
+
+  const handleAddToCart = () => {
+    actions.addToCart(product, 1);
+    showToast(`${product.name} added to cart!`, 'success');
   };
 
   // Debug favorite state
@@ -111,6 +119,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </View>
           )}
         </View>
+        
+        <TouchableOpacity
+          style={styles.addToCartButton}
+          onPress={handleAddToCart}
+          activeOpacity={0.7}
+          testID="add-to-cart-button"
+        >
+          <Icon name="shopping-cart" size={16} color={COLORS.textInverse} />
+          <Text style={styles.addToCartText}>Add to Cart</Text>
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
@@ -229,5 +247,23 @@ const styles = StyleSheet.create({
   reviews: {
     fontSize: TYPOGRAPHY.fontSize.xs,
     color: COLORS.textTertiary,
+  },
+
+  addToCartButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.primary,
+    borderRadius: BORDER_RADIUS.md,
+    paddingVertical: SPACING.sm,
+    marginTop: SPACING.md,
+    ...SHADOWS.small,
+  },
+
+  addToCartText: {
+    color: COLORS.textInverse,
+    fontSize: TYPOGRAPHY.fontSize.sm,
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    marginLeft: SPACING.xs,
   },
 });

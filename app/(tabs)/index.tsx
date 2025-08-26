@@ -5,14 +5,16 @@ import {
   StyleSheet,
   SafeAreaView,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COLORS, SPACING } from '../../src/constants/theme';
 import { ProductList } from '../../src/components/products/ProductList';
 import { DeepLinkTester } from '../../src/components/common/DeepLinkTester';
+import { Icon } from '../../src/components/common/Icon';
 import { useResponsive } from '../../src/hooks/useResponsive';
 import { useSearchHistory } from '../../src/hooks/useStorage';
-import { useApp, useProducts, useIsLoading, useError } from '../../src/store';
+import { useApp, useProducts, useIsLoading, useError, useCart } from '../../src/store';
 import { Product } from '../../src/types';
 
 export default function ProductsScreen() {
@@ -22,6 +24,7 @@ export default function ProductsScreen() {
   const products = useProducts();
   const isLoading = useIsLoading();
   const error = useError();
+  const cart = useCart();
   const { addToSearchHistory } = useSearchHistory();
   
   const [searchQuery, setSearchQuery] = useState('');
@@ -83,6 +86,21 @@ export default function ProductsScreen() {
             <Text style={styles.subtitle}>Discover amazing products</Text>
           </View>
         </View>
+        
+        <TouchableOpacity
+          style={styles.cartButton}
+          onPress={() => router.push('/cart')}
+          activeOpacity={0.7}
+        >
+          <Icon name="shopping-cart" size={24} color={COLORS.textPrimary} />
+          {cart.totalItems > 0 && (
+            <View style={styles.cartBadge}>
+              <Text style={styles.cartBadgeText}>
+                {cart.totalItems > 99 ? '99+' : cart.totalItems}
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
       </View>
 
       <ProductList
@@ -114,14 +132,18 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.borderLight,
     paddingTop: SPACING.md,
     paddingBottom: SPACING.sm,
-  },
-  
-  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: SPACING.md,
   },
   
+  headerContent: {
+    flex: 1,
+  },
+  
   titleContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingVertical: SPACING.sm,
   },
   
@@ -139,6 +161,34 @@ const styles = StyleSheet.create({
   
   productList: {
     flex: 1,
+  },
+  
+  cartButton: {
+    position: 'relative',
+    padding: SPACING.sm,
+    borderRadius: SPACING.sm,
+    backgroundColor: COLORS.background,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+  },
+  
+  cartBadge: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    backgroundColor: COLORS.error,
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  
+  cartBadgeText: {
+    color: COLORS.textInverse,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   
   debugText: {

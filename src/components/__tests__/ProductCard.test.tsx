@@ -21,17 +21,14 @@ jest.mock('../../store', () => ({
   useFavorites: () => ['1'], // Mock favorites array
 }));
 
-// Test the component logic without importing the full component
 describe('ProductCard Logic', () => {
   it('should handle favorite state correctly', () => {
-    // Test that favorites array contains product ID
     const favorites = ['1'];
     const productId = '1';
     expect(favorites.includes(productId)).toBe(true);
   });
 
   it('should handle non-favorite state correctly', () => {
-    // Test that favorites array doesn't contain product ID
     const favorites = ['1'];
     const productId = '2';
     expect(favorites.includes(productId)).toBe(false);

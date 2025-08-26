@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useEffect, ReactNode, useMemo } from 'react';
-import { AppState, AppAction, Product } from '../types';
+import { AppState, AppAction, Product, CartItem } from '../types';
 import { apiService } from '../services/api';
 import { storageService } from '../services/storage';
 
@@ -7,9 +7,21 @@ import { storageService } from '../services/storage';
 const initialState: AppState = {
   products: [],
   favorites: [],
+  cart: {
+    items: [],
+    totalItems: 0,
+    totalPrice: 0,
+  },
   isLoading: false,
   error: null,
   searchQuery: '',
+};
+
+// Helper function to calculate cart totals
+const calculateCartTotals = (items: CartItem[]) => {
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  return { totalItems, totalPrice };
 };
 
 // Reducer function
@@ -39,6 +51,79 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case 'CLEAR_SEARCH':
       return { ...state, searchQuery: '' };
     
+    case 'ADD_TO_CART': {
+      const { product, quantity = 1 } = action.payload;
+      const existingItemIndex = state.cart.items.findIndex(item => item.productId === product.id);
+      
+      let newItems: CartItem[];
+      if (existingItemIndex >= 0) {
+        // Update existing item quantity
+        newItems = [...state.cart.items];
+        newItems[existingItemIndex] = {
+          ...newItems[existingItemIndex],
+          quantity: newItems[existingItemIndex].quantity + quantity,
+        };
+      } else {
+        // Add new item
+        newItems = [...state.cart.items, { productId: product.id, quantity, product }];
+      }
+      
+      const { totalItems, totalPrice } = calculateCartTotals(newItems);
+      return {
+        ...state,
+        cart: {
+          items: newItems,
+          totalItems,
+          totalPrice,
+        },
+      };
+    }
+    
+    case 'REMOVE_FROM_CART': {
+      const newItems = state.cart.items.filter(item => item.productId !== action.payload);
+      const { totalItems, totalPrice } = calculateCartTotals(newItems);
+      return {
+        ...state,
+        cart: {
+          items: newItems,
+          totalItems,
+          totalPrice,
+        },
+      };
+    }
+    
+    case 'UPDATE_CART_QUANTITY': {
+      const { productId, quantity } = action.payload;
+      const newItems = state.cart.items.map(item =>
+        item.productId === productId
+          ? { ...item, quantity: Math.max(0, quantity) }
+          : item
+      ).filter(item => item.quantity > 0); // Remove items with 0 quantity
+      
+      const { totalItems, totalPrice } = calculateCartTotals(newItems);
+      return {
+        ...state,
+        cart: {
+          items: newItems,
+          totalItems,
+          totalPrice,
+        },
+      };
+    }
+    
+    case 'CLEAR_CART':
+      return {
+        ...state,
+        cart: {
+          items: [],
+          totalItems: 0,
+          totalPrice: 0,
+        },
+      };
+    
+    case 'SET_CART':
+      return { ...state, cart: action.payload };
+    
     default:
       return state;
   }
@@ -54,6 +139,11 @@ interface AppContextType {
     searchProducts: (query: string) => void;
     clearSearch: () => void;
     loadFavorites: () => Promise<void>;
+    addToCart: (product: Product, quantity?: number) => void;
+    removeFromCart: (productId: string) => void;
+    updateCartQuantity: (productId: string, quantity: number) => void;
+    clearCart: () => void;
+    loadCart: () => Promise<void>;
   };
 }
 
@@ -119,12 +209,58 @@ export function AppProvider({ children }: AppProviderProps) {
         console.error('Error loading favorites:', error);
       }
     },
+
+    addToCart: (product: Product, quantity: number = 1) => {
+      dispatch({ type: 'ADD_TO_CART', payload: { product, quantity } });
+    },
+
+    removeFromCart: (productId: string) => {
+      dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
+    },
+
+    updateCartQuantity: (productId: string, quantity: number) => {
+      dispatch({ type: 'UPDATE_CART_QUANTITY', payload: { productId, quantity } });
+    },
+
+    clearCart: () => {
+      dispatch({ type: 'CLEAR_CART', payload: undefined });
+    },
+
+    loadCart: async () => {
+      try {
+        const cartItems = await storageService.getCartItems();
+        if (cartItems && cartItems.length > 0) {
+          const cartState = {
+            items: cartItems,
+            totalItems: cartItems.reduce((sum, item) => sum + item.quantity, 0),
+            totalPrice: cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0),
+          };
+          dispatch({ type: 'SET_CART', payload: cartState });
+        }
+      } catch (error) {
+        console.error('Error loading cart:', error);
+      }
+    },
   }), []);
 
   // Load favorites on mount
   useEffect(() => {
     actions.loadFavorites();
   }, []);
+
+  // Load cart on mount
+  useEffect(() => {
+    actions.loadCart();
+  }, []);
+
+  // Save cart whenever it changes
+  useEffect(() => {
+    if (state.cart.items.length > 0) {
+      storageService.setCartItems(state.cart.items);
+    } else {
+      storageService.setCartItems([]);
+    }
+  }, [state.cart.items]);
 
   // Fetch products on mount
   useEffect(() => {
@@ -162,6 +298,11 @@ export function useProducts() {
 export function useFavorites() {
   const { state } = useApp();
   return state.favorites;
+}
+
+export function useCart() {
+  const { state } = useApp();
+  return state.cart;
 }
 
 export function useIsLoading() {

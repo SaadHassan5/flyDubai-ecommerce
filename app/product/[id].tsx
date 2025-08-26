@@ -16,6 +16,7 @@ import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../src/c
 import { Product } from '../../src/types';
 import { useProducts, useFavorites, useApp } from '../../src/store';
 import { Icon } from '../../src/components/common/Icon';
+import { useToast } from '../../src/components/common/ToastContext';
 import { shareProduct } from '../../src/utils/deepLinks';
 
 export default function ProductDetailScreen() {
@@ -24,6 +25,7 @@ export default function ProductDetailScreen() {
   const { actions } = useApp();
   const products = useProducts();
   const favorites = useFavorites();
+  const { showToast } = useToast();
   
   const [product, setProduct] = useState<Product | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -92,6 +94,28 @@ export default function ProductDetailScreen() {
         <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
           <Icon name="arrow-left" size={24} color={COLORS.textPrimary} />
         </TouchableOpacity>
+        
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={styles.favoriteButton}
+            onPress={handleFavoriteToggle}
+            activeOpacity={0.7}
+          >
+            <Icon
+              name={isFavorite ? 'heart' : 'heart-o'}
+              size={20}
+              color={isFavorite ? COLORS.error : COLORS.textSecondary}
+            />
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={styles.shareButton}
+            onPress={handleSharePress}
+            activeOpacity={0.7}
+          >
+            <Icon name="share" size={20} color={COLORS.textSecondary} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -116,6 +140,18 @@ export default function ProductDetailScreen() {
               </View>
             )}
           </View>
+          
+          <TouchableOpacity
+            style={styles.addToCartButton}
+            onPress={() => {
+              actions.addToCart(product, 1);
+              showToast(`${product.name} added to cart!`, 'success');
+            }}
+            activeOpacity={0.8}
+          >
+            <Icon name="shopping-cart" size={20} color={COLORS.textInverse} />
+            <Text style={styles.addToCartText}>Add to Cart</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
