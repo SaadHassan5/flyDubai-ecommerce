@@ -14,6 +14,8 @@ jest.mock('../../services/storage', () => ({
     getFavorites: jest.fn(),
     setFavorites: jest.fn(),
     toggleFavorite: jest.fn(),
+    getCartItems: jest.fn(),
+    setCartItems: jest.fn(),
   },
 }));
 
@@ -45,9 +47,11 @@ describe('App Store', () => {
   it('initializes with default state', async () => {
     // Mock the services to return empty data
     const mockGetFavorites = require('../../services/storage').storageService.getFavorites;
+    const mockGetCartItems = require('../../services/storage').storageService.getCartItems;
     const mockGetProducts = require('../../services/api').apiService.getProducts;
     
     mockGetFavorites.mockResolvedValue([]);
+    mockGetCartItems.mockResolvedValue([]);
     mockGetProducts.mockResolvedValue({
       success: true,
       data: [],
@@ -72,7 +76,9 @@ describe('App Store', () => {
 
   it('loads favorites on mount', async () => {
     const mockGetFavorites = require('../../services/storage').storageService.getFavorites;
+    const mockGetCartItems = require('../../services/storage').storageService.getCartItems;
     mockGetFavorites.mockResolvedValue(mockFavorites);
+    mockGetCartItems.mockResolvedValue([]);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <AppProvider>{children}</AppProvider>
@@ -89,10 +95,12 @@ describe('App Store', () => {
 
   it('fetches products on mount', async () => {
     const mockGetProducts = require('../../services/api').apiService.getProducts;
+    const mockGetCartItems = require('../../services/storage').storageService.getCartItems;
     mockGetProducts.mockResolvedValue({
       success: true,
       data: mockProducts,
     });
+    mockGetCartItems.mockResolvedValue([]);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <AppProvider>{children}</AppProvider>
@@ -109,10 +117,12 @@ describe('App Store', () => {
 
   it('handles product fetch error', async () => {
     const mockGetProducts = require('../../services/api').apiService.getProducts;
+    const mockGetCartItems = require('../../services/storage').storageService.getCartItems;
     mockGetProducts.mockResolvedValue({
       success: false,
       message: 'Failed to fetch products',
     });
+    mockGetCartItems.mockResolvedValue([]);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <AppProvider>{children}</AppProvider>
@@ -129,7 +139,9 @@ describe('App Store', () => {
 
   it('toggles favorite status', async () => {
     const mockToggleFavorite = require('../../services/storage').storageService.toggleFavorite;
+    const mockGetCartItems = require('../../services/storage').storageService.getCartItems;
     mockToggleFavorite.mockResolvedValue(true);
+    mockGetCartItems.mockResolvedValue([]);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <AppProvider>{children}</AppProvider>
@@ -154,6 +166,9 @@ describe('App Store', () => {
   });
 
   it('updates search query', () => {
+    const mockGetCartItems = require('../../services/storage').storageService.getCartItems;
+    mockGetCartItems.mockResolvedValue([]);
+    
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <AppProvider>{children}</AppProvider>
     );
@@ -168,6 +183,9 @@ describe('App Store', () => {
   });
 
   it('clears search query', () => {
+    const mockGetCartItems = require('../../services/storage').storageService.getCartItems;
+    mockGetCartItems.mockResolvedValue([]);
+    
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <AppProvider>{children}</AppProvider>
     );
@@ -191,7 +209,9 @@ describe('App Store', () => {
 
   it('sets loading state during API calls', async () => {
     const mockGetProducts = require('../../services/api').apiService.getProducts;
+    const mockGetCartItems = require('../../services/storage').storageService.getCartItems;
     mockGetProducts.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)));
+    mockGetCartItems.mockResolvedValue([]);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <AppProvider>{children}</AppProvider>
@@ -209,7 +229,9 @@ describe('App Store', () => {
 
   it('handles storage service errors gracefully', async () => {
     const mockToggleFavorite = require('../../services/storage').storageService.toggleFavorite;
+    const mockGetCartItems = require('../../services/storage').storageService.getCartItems;
     mockToggleFavorite.mockRejectedValue(new Error('Storage error'));
+    mockGetCartItems.mockResolvedValue([]);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <AppProvider>{children}</AppProvider>

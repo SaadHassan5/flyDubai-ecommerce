@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
   headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
+    columnGap:10
   },
 
   shareButton: {
