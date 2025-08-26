@@ -16,6 +16,7 @@ interface LoadingSpinnerProps {
   overlay?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  loader?: boolean;
 }
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
@@ -25,6 +26,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   overlay = false,
   style,
   textStyle,
+  loader = false,
 }) => {
   if (overlay) {
     return (
@@ -41,7 +43,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   return (
     <View style={[styles.container, style]}>
-      <ActivityIndicator size={size} color={color} />
+      {loader && <ActivityIndicator size={size} color={color} />}
       {text && (
         <Text style={[styles.text, textStyle]}>{text}</Text>
       )}

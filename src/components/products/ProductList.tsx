@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Dimensions,
   ScrollView,
+  Text,
 } from 'react-native';
 import { COLORS, SPACING, BREAKPOINTS } from '../../constants/theme';
 import { Product } from '../../types';
@@ -45,7 +46,6 @@ export const ProductList: React.FC<ProductListProps> = ({
   const { isMobile, gridColumns } = useResponsive();
   const [refreshing, setRefreshing] = useState(false);
   
-  // Ensure we use the correct number of columns
   const actualGridColumns = variant === 'grid' ? gridColumns : 1;
 
   const handleRefresh = useCallback(async () => {
@@ -77,18 +77,14 @@ export const ProductList: React.FC<ProductListProps> = ({
   }, [variant]);
 
   const renderEmptyState = () => {
-    if (isLoading) {
+    if (isLoading && products.length === 0) {
       return (
         <View style={styles.emptyState}>
-          <LoadingSpinner text="Loading products..." />
-        </View>
-      );
-    }
-
-    if (error) {
-      return (
-        <View style={styles.emptyState}>
-          <LoadingSpinner text={error} />
+          <LoadingSpinner 
+            loader={true} 
+            text="Loading products..." 
+            size="large"
+          />
         </View>
       );
     }
@@ -96,16 +92,27 @@ export const ProductList: React.FC<ProductListProps> = ({
     if (searchQuery && products.length === 0) {
       return (
         <View style={styles.emptyState}>
-          <LoadingSpinner text="No products found" />
+          <LoadingSpinner 
+            text={`No products found for "${searchQuery}"`} 
+            size="large"
+          />
         </View>
       );
     }
 
-    return (
-      <View style={styles.emptyState}>
-        <LoadingSpinner text="No products available" />
-      </View>
-    );
+    // Show no products available
+    if (products.length === 0) {
+      return (
+        <View style={styles.emptyState}>
+          <LoadingSpinner 
+            text="No products available" 
+            size="large"
+          />
+        </View>
+      );
+    }
+
+    return null;
   };
 
   const renderFooter = () => {
@@ -114,20 +121,10 @@ export const ProductList: React.FC<ProductListProps> = ({
     return (
       <View style={styles.footer}>
         <ActivityIndicator size="small" color={COLORS.primary} />
+        <Text style={styles.footerText}>Loading more...</Text>
       </View>
     );
   };
-
-  const renderGridItem = useCallback(({ item, index }: { item: Product; index: number }) => (
-    <View style={styles.gridItem}>
-      <ProductCard
-        product={item}
-        onPress={onProductPress}
-        onFavoritePress={onFavoritePress}
-        variant="grid"
-      />
-    </View>
-  ), [onProductPress, onFavoritePress]);
 
   const renderGridLayout = () => {
     if (variant !== 'grid' || actualGridColumns <= 1) return null;
@@ -138,14 +135,14 @@ export const ProductList: React.FC<ProductListProps> = ({
       rows.push(
         <View key={`row-${i}`} style={styles.gridRow}>
           {row.map((product, index) => (
-            <View key={product.id} style={styles.gridItem}>
-              <ProductCard
-                product={product}
-                onPress={onProductPress}
-                onFavoritePress={onFavoritePress}
-                variant="grid"
-              />
-            </View>
+                          <View key={product.id} style={styles.gridItem}>
+                <ProductCard
+                  product={product}
+                  onPress={onProductPress}
+                  onFavoritePress={onFavoritePress}
+                  variant="grid"
+                />
+              </View>
           ))}
           {/* Fill empty spaces in the last row if needed */}
           {row.length < actualGridColumns && 
@@ -168,9 +165,14 @@ export const ProductList: React.FC<ProductListProps> = ({
             tintColor={COLORS.primary}
           />
         }
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[
+          styles.listContent,
+          products.length === 0 && styles.emptyListContent,
+        ]}
       >
+        {renderEmptyState()}
         {rows}
+        {renderFooter()}
       </ScrollView>
     );
   };
@@ -206,6 +208,9 @@ export const ProductList: React.FC<ProductListProps> = ({
     />
   );
 
+  // Show initial loading overlay only when no products exist and loading
+  const showInitialLoading = isLoading && products.length === 0;
+
   return (
     <View style={[styles.container, style]}>
       {showSearch && onSearchChange && (
@@ -220,6 +225,13 @@ export const ProductList: React.FC<ProductListProps> = ({
       )}
 
       {variant === 'grid' && actualGridColumns > 1 ? renderGridLayout() : renderListLayout()}
+      
+      {/* Show refresh loading indicator */}
+      {refreshing && products.length > 0 && (
+        <View style={styles.refreshIndicator}>
+          <ActivityIndicator size="small" color={COLORS.primary} />
+        </View>
+      )}
     </View>
   );
 };
@@ -280,4 +292,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: SPACING.md,
   },
+
+  footerText: {
+    marginTop: SPACING.sm,
+    color: COLORS.textSecondary,
+  },
+
+     refreshIndicator: {
+     position: 'absolute',
+     bottom: SPACING.xxl,
+     alignSelf: 'center',
+     backgroundColor: COLORS.background,
+     padding: SPACING.md,
+     borderRadius: SPACING.md,
+     shadowColor: COLORS.shadowDark,
+     shadowOffset: { width: 0, height: 2 },
+     shadowOpacity: 0.1,
+     shadowRadius: 4,
+     elevation: 3,
+   },
 });

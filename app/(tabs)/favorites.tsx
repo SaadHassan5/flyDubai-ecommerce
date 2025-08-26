@@ -66,7 +66,7 @@ export default function FavoritesScreen() {
 
       <ProductList
         products={favoriteProducts}
-        isLoading={isLoading}
+        isLoading={false}
         error={error}
         onProductPress={handleProductPress}
         onFavoritePress={handleFavoritePress}
