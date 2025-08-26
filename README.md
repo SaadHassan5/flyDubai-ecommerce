@@ -51,8 +51,6 @@ src/
 │   ├── useApi.ts      # API operation hooks
 │   ├── useStorage.ts  # Storage operation hooks
 │   └── useResponsive.ts # Responsive design hooks
-├── screens/            # App screens
-│   └── HomeScreen.tsx # Main product list screen
 ├── services/           # Business logic and external services
 │   ├── api.ts         # API service with axios interceptors
 │   └── storage.ts     # AsyncStorage service
