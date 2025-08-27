@@ -7,7 +7,8 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../constants/theme';
+import { COLORS, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../constants/theme';
+import { SPACING, WP, HP, getResponsiveSpacing, getPlatformSpacing } from '../../constants/spacing';
 import { Icon } from './Icon';
 
 export type ToastType = 'success' | 'error' | 'info' | 'warning';
@@ -122,9 +123,9 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 60, // Below status bar
-    left: SPACING.md,
-    right: SPACING.md,
+    top: getPlatformSpacing(60, 80),
+    left: WP(4),
+    right: WP(4),
     zIndex: 1000,
     borderRadius: BORDER_RADIUS.lg,
     ...SHADOWS.large,
@@ -132,19 +133,19 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: SPACING.md,
-    paddingVertical: SPACING.md + 4,
+    padding: WP(4),
+    paddingVertical: HP(2) + 4,
   },
   message: {
     flex: 1,
     color: COLORS.textInverse,
     fontSize: TYPOGRAPHY.fontSize.md,
     fontWeight: TYPOGRAPHY.fontWeight.medium,
-    marginLeft: SPACING.sm,
-    marginRight: SPACING.md,
+    marginLeft: WP(2),
+    marginRight: WP(4),
   },
   closeButton: {
-    padding: SPACING.xs,
+    padding: WP(1),
     borderRadius: BORDER_RADIUS.round,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },

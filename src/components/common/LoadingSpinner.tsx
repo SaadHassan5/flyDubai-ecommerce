@@ -7,7 +7,8 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { COLORS, TYPOGRAPHY, SPACING } from '../../constants/theme';
+import { COLORS, TYPOGRAPHY } from '../../constants/theme';
+import { SPACING, WP, HP, getResponsiveSpacing, getPlatformSpacing } from '../../constants/spacing';
 
 interface LoadingSpinnerProps {
   size?: 'small' | 'large';
@@ -55,11 +56,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: SPACING.md,
+    padding: WP(4),
   },
   
   text: {
-    marginTop: SPACING.sm,
+    marginTop: HP(1),
     fontSize: TYPOGRAPHY.fontSize.sm,
     color: COLORS.textSecondary,
     textAlign: 'center',
@@ -80,11 +81,11 @@ const styles = StyleSheet.create({
   overlayContent: {
     backgroundColor: COLORS.backgroundSecondary,
     borderRadius: 12,
-    padding: SPACING.lg,
+    padding: WP(6),
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: 120,
-    minHeight: 120,
+    minWidth: getPlatformSpacing(120, 140),
+    minHeight: getPlatformSpacing(120, 140),
     shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
   },
   
   overlayText: {
-    marginTop: SPACING.md,
+    marginTop: HP(2),
     fontSize: TYPOGRAPHY.fontSize.md,
     color: COLORS.textPrimary,
     textAlign: 'center',

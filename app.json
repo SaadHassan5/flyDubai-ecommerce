@@ -17,7 +17,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.saadhassanropstam.flydubaiecommerceapp",
       "associatedDomains": [
-        "applinks:yourdomain.com"
+        "applinks:flydubaiecommerceapp.com"
       ]
     },
     "android": {
@@ -34,7 +34,7 @@
           "data": [
             {
               "scheme": "https",
-              "host": "yourdomain.com",
+              "host": "flydubaiecommerceapp.com",
               "pathPrefix": "/product"
             }
           ],

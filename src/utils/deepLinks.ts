@@ -103,7 +103,7 @@ export function generateProductLink(productId: string): string {
 }
 
 // Generate universal link URL for a product (for sharing)
-export function generateUniversalProductLink(productId: string, domain: string = 'yourdomain.com'): string {
+export function generateUniversalProductLink(productId: string, domain: string = 'flydubaiecommerceapp.com'): string {
   return `https://${domain}/product/${productId}`;
 }
 

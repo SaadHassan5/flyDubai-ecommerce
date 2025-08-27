@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native';
+import { WP, HP } from '../src/constants/spacing';
 
 export default function ModalScreen() {
   return (
@@ -18,19 +19,19 @@ export default function ModalScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: WP(5),
   },
   titleContainer: {
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: HP(6),
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: HP(2.5),
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: HP(3.75),
     height: 1,
     width: '80%',
     backgroundColor: '#eee',

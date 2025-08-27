@@ -10,7 +10,8 @@ import {
   Alert 
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { COLORS, SPACING } from '../../src/constants/theme';
+import { COLORS } from '../../src/constants/theme';
+import { SPACING, WP, HP } from '../../src/constants/spacing';
 import { useCart, useApp } from '../../src/store';
 import { Icon } from '../../src/components/common/Icon';
 import { useToast } from '../../src/components/common/ToastContext';
@@ -205,16 +206,16 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backgroundSecondary,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.borderLight,
-    paddingTop: SPACING.md,
-    paddingBottom: SPACING.sm,
+    paddingTop: HP(2),
+    paddingBottom: HP(1),
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: SPACING.md,
+    paddingHorizontal: WP(4),
   },
   
   backButton: {
-    padding: SPACING.sm,
-    marginRight: SPACING.sm,
+    padding: WP(2),
+    marginRight: WP(2),
   },
   
   headerContent: {
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+    marginBottom: HP(0.5),
   },
   
   itemCount: {
@@ -235,7 +236,7 @@ const styles = StyleSheet.create({
   },
   
   clearButton: {
-    padding: SPACING.sm,
+    padding: WP(2),
   },
   
   clearButtonText: {
@@ -248,29 +249,29 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: SPACING.xl,
+    paddingHorizontal: WP(6),
   },
   
   emptyCartTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: COLORS.textPrimary,
-    marginTop: SPACING.lg,
-    marginBottom: SPACING.sm,
+    marginTop: HP(3),
+    marginBottom: HP(1),
   },
   
   emptyCartSubtitle: {
     fontSize: 16,
     color: COLORS.textSecondary,
     textAlign: 'center',
-    marginBottom: SPACING.xl,
+    marginBottom: HP(6),
   },
   
   shopNowButton: {
     backgroundColor: COLORS.primary,
-    paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.md,
-    borderRadius: SPACING.md,
+    paddingHorizontal: WP(6),
+    paddingVertical: HP(2),
+    borderRadius: WP(4),
   },
   
   shopNowButtonText: {
@@ -280,27 +281,27 @@ const styles = StyleSheet.create({
   },
   
   cartList: {
-    padding: SPACING.md,
-    paddingBottom: SPACING.xxl,
+    padding: WP(4),
+    paddingBottom: HP(6),
   },
   
   cartItem: {
     flexDirection: 'row',
     backgroundColor: COLORS.backgroundSecondary,
-    borderRadius: SPACING.md,
-    padding: SPACING.md,
-    marginBottom: SPACING.md,
+    borderRadius: WP(4),
+    padding: WP(4),
+    marginBottom: HP(2),
     alignItems: 'center',
   },
   
   itemImageContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: SPACING.sm,
+    width: WP(15),
+    height: HP(7.5),
+    borderRadius: WP(2),
     backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: SPACING.md,
+    marginRight: WP(4),
   },
   
   itemDetails: {
@@ -311,13 +312,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+    marginBottom: HP(0.5),
   },
   
   itemPrice: {
     fontSize: 14,
     color: COLORS.textSecondary,
-    marginBottom: SPACING.sm,
+    marginBottom: HP(1),
   },
   
   quantityContainer: {
@@ -340,8 +341,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: COLORS.textPrimary,
-    marginHorizontal: SPACING.md,
-    minWidth: 30,
+    marginHorizontal: WP(4),
+    minWidth: WP(7.5),
     textAlign: 'center',
   },
   
@@ -353,25 +354,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: COLORS.textPrimary,
-    marginBottom: SPACING.sm,
+    marginBottom: HP(1),
   },
   
   removeButton: {
-    padding: SPACING.sm,
+    padding: WP(2),
   },
   
   footer: {
     backgroundColor: COLORS.backgroundSecondary,
     borderTopWidth: 1,
     borderTopColor: COLORS.borderLight,
-    padding: SPACING.md,
+    padding: WP(4),
   },
   
   totalContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SPACING.md,
+    marginBottom: HP(2),
   },
   
   totalLabel: {
@@ -388,8 +389,8 @@ const styles = StyleSheet.create({
   
   checkoutButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: SPACING.md,
-    paddingVertical: SPACING.md,
+    borderRadius: WP(4),
+    paddingVertical: HP(2),
     alignItems: 'center',
   },
   

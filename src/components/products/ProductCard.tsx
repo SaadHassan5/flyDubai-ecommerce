@@ -7,9 +7,10 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../constants/theme';
+import { COLORS, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../constants/theme';
+import { SPACING, WP, HP, getResponsiveSpacing, getPlatformSpacing, getBreakpointSpacing } from '../../constants/spacing';
 import { Product } from '../../types';
-import { useResponsive } from '../../hooks/useResponsive';
+import { getCurrentBreakpoint } from '../../constants/spacing';
 import { useFavorites, useApp } from '../../store';
 import { Icon } from '../common/Icon';
 import { useToast } from '../common/ToastContext';
@@ -29,7 +30,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   variant = 'grid',
   style,
 }) => {
-  const { isMobile } = useResponsive();
+  const currentBreakpoint = getCurrentBreakpoint();
+  const isMobile = currentBreakpoint === 'mobile';
   const favorites = useFavorites();
   const { actions } = useApp();
   const { showToast } = useToast();
@@ -145,12 +147,12 @@ const styles = StyleSheet.create({
   
   gridCard: {
     width: '100%',
-    marginBottom: SPACING.md,
+    marginBottom: HP(2),
   },
   
   listCard: {
     width: '100%',
-    marginBottom: SPACING.md,
+    marginBottom: HP(2),
   },
   
   mobileCard: {
@@ -176,12 +178,12 @@ const styles = StyleSheet.create({
   
   favoriteButton: {
     position: 'absolute',
-    top: SPACING.sm,
-    right: SPACING.sm,
+    top: HP(1),
+    right: WP(2),
     backgroundColor: COLORS.backgroundSecondary,
     borderRadius: BORDER_RADIUS.round,
-    width: 36,
-    height: 36,
+    width: WP(9),
+    height: HP(4.5),
     alignItems: 'center',
     justifyContent: 'center',
     ...SHADOWS.small,
@@ -197,28 +199,28 @@ const styles = StyleSheet.create({
   },
   
   content: {
-    padding: SPACING.md,
+    padding: WP(4),
   },
   
   gridContent: {
-    padding: SPACING.sm,
+    padding: WP(2),
   },
   
   listContent: {
-    padding: SPACING.md,
+    padding: WP(4),
   },
   
   productName: {
     fontSize: TYPOGRAPHY.fontSize.md,
     fontWeight: TYPOGRAPHY.fontWeight.semibold,
     color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+    marginBottom: HP(0.5),
   },
   
   productDescription: {
     fontSize: TYPOGRAPHY.fontSize.sm,
     color: COLORS.textSecondary,
-    marginBottom: SPACING.sm,
+    marginBottom: HP(1),
   },
   
   priceContainer: {
@@ -241,7 +243,7 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: TYPOGRAPHY.fontSize.sm,
     color: COLORS.textSecondary,
-    marginRight: SPACING.xs,
+    marginRight: WP(1),
   },
   
   reviews: {
@@ -255,8 +257,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.primary,
     borderRadius: BORDER_RADIUS.md,
-    paddingVertical: SPACING.sm,
-    marginTop: SPACING.md,
+    paddingVertical: HP(1),
+    marginTop: HP(2),
     ...SHADOWS.small,
   },
 
@@ -264,6 +266,6 @@ const styles = StyleSheet.create({
     color: COLORS.textInverse,
     fontSize: TYPOGRAPHY.fontSize.sm,
     fontWeight: TYPOGRAPHY.fontWeight.semibold,
-    marginLeft: SPACING.xs,
+    marginLeft: WP(1),
   },
 });

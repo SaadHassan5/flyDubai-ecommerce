@@ -8,18 +8,20 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { COLORS, SPACING } from '../../src/constants/theme';
+import { COLORS } from '../../src/constants/theme';
+import { SPACING, WP, HP } from '../../src/constants/spacing';
 import { ProductList } from '../../src/components/products/ProductList';
 import { DeepLinkTester } from '../../src/components/common/DeepLinkTester';
 import { Icon } from '../../src/components/common/Icon';
-import { useResponsive } from '../../src/hooks/useResponsive';
+import { getCurrentBreakpoint } from '../../src/constants/spacing';
 import { useSearchHistory } from '../../src/hooks/useStorage';
 import { useApp, useProducts, useIsLoading, useError, useCart } from '../../src/store';
 import { Product } from '../../src/types';
 
 export default function ProductsScreen() {
   const router = useRouter();
-  const { isMobile, gridColumns, dimensions } = useResponsive();
+  const currentBreakpoint = getCurrentBreakpoint();
+  const isMobile = currentBreakpoint === 'mobile';
   const { actions } = useApp();
   const products = useProducts();
   const isLoading = useIsLoading();
@@ -130,12 +132,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backgroundSecondary,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.borderLight,
-    paddingTop: SPACING.md,
-    paddingBottom: SPACING.sm,
+    paddingTop: HP(2),
+    paddingBottom: HP(1),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: SPACING.md,
+    paddingHorizontal: WP(4),
   },
   
   headerContent: {
@@ -144,14 +146,14 @@ const styles = StyleSheet.create({
   
   titleContainer: {
     alignItems: 'flex-start',
-    paddingVertical: SPACING.sm,
+    paddingVertical: HP(1),
   },
   
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+    marginBottom: HP(0.5),
   },
   
   subtitle: {
@@ -165,8 +167,8 @@ const styles = StyleSheet.create({
   
   cartButton: {
     position: 'relative',
-    padding: SPACING.sm,
-    borderRadius: SPACING.sm,
+    padding: WP(2),
+    borderRadius: WP(2),
     backgroundColor: COLORS.background,
     borderWidth: 1,
     borderColor: COLORS.borderLight,
@@ -174,15 +176,15 @@ const styles = StyleSheet.create({
   
   cartBadge: {
     position: 'absolute',
-    top: -5,
-    right: -5,
+    top: -HP(0.6),
+    right: -WP(1.25),
     backgroundColor: COLORS.error,
-    borderRadius: 10,
-    minWidth: 20,
-    height: 20,
+    borderRadius: WP(2.5),
+    minWidth: WP(5),
+    height: HP(2.5),
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 4,
+    paddingHorizontal: WP(1),
   },
   
   cartBadgeText: {

@@ -9,11 +9,22 @@ jest.mock('../common/Icon', () => ({
   },
 }));
 
-// Mock the useResponsive hook
-jest.mock('../../hooks/useResponsive', () => ({
-  useResponsive: () => ({
-    isMobile: false,
-  }),
+// Mock Dimensions API
+jest.mock('react-native', () => ({
+  ...jest.requireActual('react-native'),
+  Dimensions: {
+    get: jest.fn(() => ({ width: 1024, height: 768 })),
+  },
+}));
+
+// Mock the getCurrentBreakpoint function
+jest.mock('../../constants/spacing', () => ({
+  getCurrentBreakpoint: () => 'desktop',
+  WP: jest.fn((percent) => Math.round((1024 * percent) / 100)),
+  HP: jest.fn((percent) => Math.round((768 * percent) / 100)),
+  SPACING: {
+    xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48, xxxl: 64
+  },
 }));
 
 // Mock the useFavorites hook
@@ -36,8 +47,8 @@ describe('ProductCard Logic', () => {
 
   it('should handle responsive behavior', () => {
     // Test responsive hook behavior
-    const { useResponsive } = require('../../hooks/useResponsive');
-    const responsive = useResponsive();
-    expect(responsive.isMobile).toBe(false);
+    const { getCurrentBreakpoint } = require('../../constants/spacing');
+const currentBreakpoint = getCurrentBreakpoint();
+          expect(currentBreakpoint).toBe('desktop');
   });
 });

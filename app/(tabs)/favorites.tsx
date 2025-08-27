@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { COLORS, SPACING } from '../../src/constants/theme';
+import { COLORS } from '../../src/constants/theme';
+import { SPACING, WP, HP } from '../../src/constants/spacing';
 import { Product } from '../../src/types';
 import { ProductList } from '../../src/components/products/ProductList';
 import { useProducts, useFavorites, useIsLoading, useError, useApp } from '../../src/store';
-import { useResponsive } from '../../src/hooks/useResponsive';
+import { getCurrentBreakpoint } from '../../src/constants/spacing';
 
 export default function FavoritesScreen() {
   const router = useRouter();
@@ -14,7 +15,8 @@ export default function FavoritesScreen() {
   const favorites = useFavorites();
   const isLoading = useIsLoading();
   const error = useError();
-  const { isMobile } = useResponsive();
+  const currentBreakpoint = getCurrentBreakpoint();
+  const isMobile = currentBreakpoint === 'mobile';
   
   const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
 
@@ -89,24 +91,24 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backgroundSecondary,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.borderLight,
-    paddingTop: SPACING.md,
-    paddingBottom: SPACING.sm,
+    paddingTop: HP(2),
+    paddingBottom: HP(1),
   },
   
   headerContent: {
-    paddingHorizontal: SPACING.md,
+    paddingHorizontal: WP(4),
   },
   
   titleContainer: {
     alignItems: 'center',
-    paddingVertical: SPACING.sm,
+    paddingVertical: HP(1),
   },
   
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+    marginBottom: HP(0.5),
   },
   
   subtitle: {

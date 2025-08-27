@@ -9,12 +9,13 @@ import {
   ScrollView,
   Text,
 } from 'react-native';
-import { COLORS, SPACING, BREAKPOINTS } from '../../constants/theme';
+import { COLORS, BREAKPOINTS } from '../../constants/theme';
+import { SPACING, WP, HP, getResponsiveSpacing, getBreakpointSpacing } from '../../constants/spacing';
 import { Product } from '../../types';
 import { ProductCard } from './ProductCard';
 import { Input } from '../common/Input';
 import { LoadingSpinner } from '../common/LoadingSpinner';
-import { useResponsive } from '../../hooks/useResponsive';
+import { getCurrentBreakpoint } from '../../constants/spacing';
 
 interface ProductListProps {
   products: Product[];
@@ -43,9 +44,10 @@ export const ProductList: React.FC<ProductListProps> = ({
   variant = 'grid',
   style,
 }) => {
-  const { isMobile, gridColumns } = useResponsive();
   const [refreshing, setRefreshing] = useState(false);
   
+  const currentBreakpoint = getCurrentBreakpoint();
+  const gridColumns = currentBreakpoint === 'mobile' ? 1 : 2;
   const actualGridColumns = variant === 'grid' ? gridColumns : 1;
 
   const handleRefresh = useCallback(async () => {
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
   },
   
   searchContainer: {
-    padding: SPACING.md,
+    padding: WP(4),
     backgroundColor: COLORS.backgroundSecondary,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.borderLight,
@@ -254,8 +256,8 @@ const styles = StyleSheet.create({
   },
   
   listContent: {
-    padding: SPACING.md,
-    paddingBottom: SPACING.xxl,
+    padding: WP(4),
+    paddingBottom: HP(6),
   },
   
   emptyListContent: {
@@ -266,45 +268,45 @@ const styles = StyleSheet.create({
   
   columnWrapper: {
     justifyContent: 'space-between',
-    marginBottom: SPACING.md,
-    gap: SPACING.md, // Add gap between columns
+    marginBottom: HP(2),
+    gap: WP(4),
   },
   
   emptyState: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: SPACING.xxxl,
+    paddingVertical: HP(8),
   },
   
   footer: {
-    paddingVertical: SPACING.lg,
+    paddingVertical: HP(3),
     alignItems: 'center',
   },
 
   gridItem: {
-    width: '50%', // For a 2-column grid
-    padding: SPACING.md,
+    width: '50%',
+    padding: WP(4),
   },
 
   gridRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: SPACING.md,
+    marginBottom: HP(2),
   },
 
   footerText: {
-    marginTop: SPACING.sm,
+    marginTop: HP(1),
     color: COLORS.textSecondary,
   },
 
      refreshIndicator: {
      position: 'absolute',
-     bottom: SPACING.xxl,
+     bottom: HP(6),
      alignSelf: 'center',
      backgroundColor: COLORS.background,
-     padding: SPACING.md,
-     borderRadius: SPACING.md,
+     padding: WP(4),
+     borderRadius: WP(4),
      shadowColor: COLORS.shadowDark,
      shadowOffset: { width: 0, height: 2 },
      shadowOpacity: 0.1,

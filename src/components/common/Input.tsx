@@ -8,7 +8,8 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../constants/theme';
+import { COLORS, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../constants/theme';
+import { SPACING, WP, HP, getResponsiveSpacing, getPlatformSpacing } from '../../constants/spacing';
 
 interface InputProps {
   label?: string;
@@ -151,14 +152,14 @@ export const Input: React.FC<InputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: SPACING.md,
+    marginBottom: HP(2),
   },
   
   label: {
     fontSize: TYPOGRAPHY.fontSize.sm,
     fontWeight: TYPOGRAPHY.fontWeight.medium,
     color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+    marginBottom: HP(0.5),
   },
   
   labelDisabled: {
@@ -172,8 +173,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: BORDER_RADIUS.md,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
+    paddingHorizontal: WP(4),
+    paddingVertical: HP(1),
     ...SHADOWS.small,
   },
   
@@ -192,12 +193,12 @@ const styles = StyleSheet.create({
   },
   
   leftIconContainer: {
-    marginRight: SPACING.sm,
+    marginRight: WP(2),
   },
   
   rightIconContainer: {
-    marginLeft: SPACING.sm,
-    padding: SPACING.xs,
+    marginLeft: WP(2),
+    padding: WP(1),
   },
   
   textInput: {
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
   error: {
     fontSize: TYPOGRAPHY.fontSize.sm,
     color: COLORS.error,
-    marginTop: SPACING.xs,
-    marginLeft: SPACING.sm,
+    marginTop: HP(0.5),
+    marginLeft: WP(2),
   },
 });

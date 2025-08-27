@@ -70,16 +70,11 @@ export const TYPOGRAPHY = {
   },
 } as const;
 
-// Spacing
-export const SPACING = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
-  xxxl: 64,
-} as const;
+// Spacing - Import from spacing.ts for responsive values
+import { SPACING } from './spacing';
+
+// Re-export spacing for backward compatibility
+export { SPACING };
 
 // Border radius
 export const BORDER_RADIUS = {

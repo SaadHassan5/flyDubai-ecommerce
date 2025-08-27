@@ -7,7 +7,8 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../constants/theme';
+import { COLORS, TYPOGRAPHY, BORDER_RADIUS } from '../../constants/theme';
+import { SPACING, WP, HP, getResponsiveSpacing, getPlatformSpacing } from '../../constants/spacing';
 
 interface ButtonProps {
   title: string;
@@ -92,21 +93,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   
-  // Sizes
   small: {
-    paddingVertical: SPACING.xs,
-    paddingHorizontal: SPACING.sm,
-    minHeight: 32,
+    paddingVertical: HP(1),
+    paddingHorizontal: WP(2),
+    minHeight: getPlatformSpacing(32, 36),
   },
   medium: {
-    paddingVertical: SPACING.sm,
-    paddingHorizontal: SPACING.md,
-    minHeight: 44,
+    paddingVertical: HP(1.5),
+    paddingHorizontal: WP(3),
+    minHeight: getPlatformSpacing(44, 48),
   },
   large: {
-    paddingVertical: SPACING.md,
-    paddingHorizontal: SPACING.lg,
-    minHeight: 56,
+    paddingVertical: HP(2),
+    paddingHorizontal: WP(4),
+    minHeight: getPlatformSpacing(56, 64),
   },
   
   // Full width

@@ -73,7 +73,7 @@ src/
 │   └── products/       # Product-specific components (ProductCard, ProductList)
 ├── store/              # State management with Context API
 │   └── __tests__/      # Store and reducer tests
-├── hooks/              # Custom React hooks (useApi, useResponsive, useStorage)
+├── hooks/              # Custom React hooks (useApi, useOrientation, useSafeArea, useDimensions, useStorage)
 ├── services/           # Business logic services (API, storage)
 ├── constants/          # App configuration (theme, API endpoints, colors)
 ├── utils/              # Utility functions and helpers

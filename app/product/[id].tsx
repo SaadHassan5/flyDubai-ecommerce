@@ -12,7 +12,8 @@ import {
   Alert,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../src/constants/theme';
+import { COLORS, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../src/constants/theme';
+import { SPACING, WP, HP, getResponsiveSpacing } from '../../src/constants/spacing';
 import { Product } from '../../src/types';
 import { useProducts, useFavorites, useApp } from '../../src/store';
 import { Icon } from '../../src/components/common/Icon';
@@ -170,22 +171,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
+    paddingHorizontal: WP(4),
+    paddingVertical: HP(1),
     backgroundColor: COLORS.backgroundSecondary,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.borderLight,
   },
   
   backButton: {
-    padding: SPACING.sm,
+    padding: WP(2),
     borderRadius: BORDER_RADIUS.round,
     backgroundColor: COLORS.background,
     ...SHADOWS.small,
   },
   
   favoriteButton: {
-    padding: SPACING.sm,
+    padding: WP(2),
     borderRadius: BORDER_RADIUS.round,
     backgroundColor: COLORS.background,
     borderWidth: 1,
@@ -205,12 +206,12 @@ const styles = StyleSheet.create({
   },
 
   shareButton: {
-    padding: SPACING.sm,
+    padding: WP(2),
     borderRadius: BORDER_RADIUS.round,
     backgroundColor: COLORS.background,
     borderWidth: 1,
     borderColor: COLORS.border,
-    marginRight: SPACING.sm,
+    marginRight: WP(2),
     ...SHADOWS.small,
   },
   
@@ -230,28 +231,28 @@ const styles = StyleSheet.create({
   },
   
   productInfo: {
-    padding: SPACING.lg,
+    padding: WP(6),
   },
   
   productName: {
     fontSize: TYPOGRAPHY.fontSize.xl,
     fontWeight: 'bold',
     color: COLORS.textPrimary,
-    marginBottom: SPACING.sm,
+    marginBottom: HP(1),
   },
   
   productDescription: {
     fontSize: TYPOGRAPHY.fontSize.md,
     color: COLORS.textSecondary,
     lineHeight: 24,
-    marginBottom: SPACING.lg,
+    marginBottom: HP(3),
   },
   
   priceContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SPACING.xl,
+    marginBottom: HP(4),
   },
   
   price: {
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: TYPOGRAPHY.fontSize.md,
     color: COLORS.textSecondary,
-    marginRight: SPACING.xs,
+    marginRight: WP(1),
   },
   
   reviews: {
@@ -281,8 +282,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.primary,
-    paddingVertical: SPACING.md,
-    paddingHorizontal: SPACING.lg,
+    paddingVertical: HP(2),
+    paddingHorizontal: WP(6),
     borderRadius: BORDER_RADIUS.lg,
     ...SHADOWS.medium,
   },
@@ -291,7 +292,7 @@ const styles = StyleSheet.create({
     fontSize: TYPOGRAPHY.fontSize.md,
     fontWeight: '600',
     color: COLORS.background,
-    marginLeft: SPACING.sm,
+    marginLeft: WP(2),
   },
   
   loadingContainer: {
