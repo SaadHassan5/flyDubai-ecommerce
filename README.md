@@ -49,6 +49,7 @@ This is an e-commerce mobile app built for FlyDubai using React Native and Expo.
 - **React Context API** with **useReducer** for predictable state management
 - **AsyncStorage** for persistent local data storage
 - **Axios** for HTTP API calls with interceptors
+- **Environment Variables** to keep your API keys safe
 
 ### UI & Styling
 - **React Native StyleSheet** for component styling
@@ -76,6 +77,8 @@ src/
 ├── hooks/              # Custom React hooks (useApi, useOrientation, useSafeArea, useDimensions, useStorage)
 ├── services/           # Business logic services (API, storage)
 ├── constants/          # App configuration (theme, API endpoints, colors)
+├── config/             # Environment configuration and app settings
+├── types/              # TypeScript type definitions
 ├── utils/              # Utility functions and helpers
 └── __tests__/          # Component and integration tests
 ```
@@ -101,7 +104,13 @@ src/
    npm install
    ```
 
-3. **Start the development server**
+3. **Set up your environment**
+   ```bash
+   cp env.example .env
+   # Now edit .env with your real API credentials
+   ```
+
+4. **Start the development server**
    ```bash
    npm start
    ```
@@ -162,14 +171,50 @@ npm run web
 ## 🔧 Configuration
 
 ### Environment Variables
-Create a `.env` file:
-```env
-API_BASE_URL=https://your-api-endpoint.com
-API_TIMEOUT=10000
+You'll need to set up environment variables for the app to work. Start by copying the example file:
+
+```bash
+cp env.example .env
 ```
+
+Then edit the `.env` file with your actual values:
+
+```env
+# API Configuration
+API_URL=https://your-api-endpoint.com
+API_KEY=your_api_key_here
+
+# Storage Keys
+STORAGE_FAVORITES=favorites
+STORAGE_USER_PREFERENCES=user_preferences
+STORAGE_CART_ITEMS=cart_items
+STORAGE_SEARCH_HISTORY=search_history
+```
+
+### Files You Need to Know
+- `env.example` - This template shows you what variables to set
+- `.env` - Put your real values here (this file won't be committed to git)
+- `src/config/env.ts` - How the app reads your environment variables
+- `src/types/env.d.ts` - TypeScript definitions for the variables
 
 ### Theme Customization
 Modify `src/constants/theme.ts` to change colors, spacing, and typography.
+
+## 🔒 Security Notes
+
+### Keep Your Secrets Safe
+- Don't commit your `.env` file to git - it has your API keys
+- Use different API keys for development vs production
+- Change your API keys every now and then for safety
+
+### API Safety
+- Your API keys are stored in environment variables, not hardcoded in the app
+- Always use HTTPS for your API calls
+
+### Local Data
+- Storage keys are configurable so you can change them if needed
+- Don't store sensitive user data in local storage
+- Clear user data when they log out
 
 ## 🧪 Testing
 
@@ -240,24 +285,25 @@ expo build:web
 
 ## 📋 Assessment Summary
 
-### What Was Accomplished
-- ✅ **Complete E-commerce App**: Full-featured shopping application with product browsing, search, favorites, and cart
-- ✅ **Shopping Cart System**: Fully functional cart with add, remove, update, and persistent storage
-- ✅ **Responsive Design**: Mobile-first design that works across all device sizes
-- ✅ **Cross-Platform**: Single codebase running on iOS, Android, and web
-- ✅ **TypeScript Implementation**: Type-safe code with proper interfaces and types
-- ✅ **State Management**: Clean architecture using React Context and useReducer
-- ✅ **Testing**: Unit tests for core functionality with 100% pass rate
-- ✅ **Modern UI/UX**: Toast notifications, smooth animations, and intuitive navigation
+### What I Built
+- ✅ **Complete E-commerce App**: A full shopping app with products, search, favorites, and cart
+- ✅ **Shopping Cart System**: Cart that actually works - add, remove, update quantities, and saves your data
+- ✅ **Responsive Design**: Works on phones, tablets, and computers
+- ✅ **Cross-Platform**: One codebase that runs everywhere
+- ✅ **TypeScript**: Code that's safe and won't break unexpectedly
+- ✅ **State Management**: Clean way to handle app data and user actions
+- ✅ **Testing**: Tests that actually pass and make sure everything works
+- ✅ **Modern UI/UX**: Nice animations, toast messages, and smooth navigation
 
-### Technical Skills Demonstrated
-- **React Native Development**: Cross-platform mobile app development
-- **State Management**: Complex state handling with cart operations
-- **TypeScript**: Type-safe development with proper interfaces
-- **Responsive Design**: Adaptive layouts for different screen sizes
-- **Testing**: Unit testing with Jest and React Native Testing Library
-- **Architecture**: Clean, maintainable code structure
-- **Problem Solving**: Implementing complex features like shopping cart
+### What I Can Do
+- **React Native Development**: Build apps that work on iOS, Android, and web
+- **State Management**: Handle complex app state like shopping carts
+- **TypeScript**: Write code that catches errors before it runs
+- **Responsive Design**: Make apps that look good on any screen size
+- **Testing**: Write tests to make sure everything works
+- **Architecture**: Organize code so it's easy to maintain
+- **Problem Solving**: Figure out how to build tricky features
+- **Security**: Set up apps so API keys stay safe
 
 ## 📄 License
 

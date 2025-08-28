@@ -1,7 +1,9 @@
-// API Configuration
+import { ENV } from '../config/env';
+
+
 export const API_CONFIG = {
-  BASE_URL: 'https://mocki.io/v1',
-  PRODUCTS_ENDPOINT: '/c53fb45e-5085-487a-afac-0295f62fb86e',
+  BASE_URL: ENV.API_URL,
+  PRODUCTS_ENDPOINT: ENV.API_KEY,
   TIMEOUT: 10000,
   RETRY_ATTEMPTS: 3,
 } as const;

@@ -1,0 +1,18 @@
+import { 
+  API_URL, 
+  API_KEY, 
+  STORAGE_FAVORITES, 
+  STORAGE_USER_PREFERENCES, 
+  STORAGE_CART_ITEMS, 
+  STORAGE_SEARCH_HISTORY 
+} from '@env';
+
+// Environment configuration
+export const ENV = {
+  API_URL,
+  API_KEY,
+  STORAGE_FAVORITES,
+  STORAGE_USER_PREFERENCES,
+  STORAGE_CART_ITEMS,
+  STORAGE_SEARCH_HISTORY,
+} as const;

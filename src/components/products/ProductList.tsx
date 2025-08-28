@@ -210,9 +210,6 @@ export const ProductList: React.FC<ProductListProps> = ({
     />
   );
 
-  // Show initial loading overlay only when no products exist and loading
-  const showInitialLoading = isLoading && products.length === 0;
-
   return (
     <View style={[styles.container, style]}>
       {showSearch && onSearchChange && (

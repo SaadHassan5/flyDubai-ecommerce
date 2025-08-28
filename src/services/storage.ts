@@ -1,20 +1,23 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform } from "react-native";
+import { ENV } from "../config/env";
 
 // Storage keys
 const STORAGE_KEYS = {
-  FAVORITES: '@ecommerce:favorites',
-  USER_PREFERENCES: '@ecommerce:user_preferences',
-  CART_ITEMS: '@ecommerce:cart_items',
-  SEARCH_HISTORY: '@ecommerce:search_history',
+  FAVORITES: `@ecommerce:${ENV.STORAGE_FAVORITES}`,
+  USER_PREFERENCES: `@ecommerce:${ENV.STORAGE_USER_PREFERENCES}`,
+  CART_ITEMS: `@ecommerce:${ENV.STORAGE_CART_ITEMS}`,
+  SEARCH_HISTORY: `@ecommerce:${ENV.STORAGE_SEARCH_HISTORY}`,
 } as const;
 
-// Storage Service class for handling storage operations
 class StorageService {
-  // Generic get method
   async get<T>(key: string): Promise<T | null> {
     try {
-      if (Platform.OS === 'web' && typeof window !== 'undefined' && window.localStorage) {
+      if (
+        Platform.OS === "web" &&
+        typeof window !== "undefined" &&
+        window.localStorage
+      ) {
         // Use localStorage on web
         const value = window.localStorage.getItem(key);
         return value ? JSON.parse(value) : null;
@@ -32,7 +35,11 @@ class StorageService {
   // Generic set method
   async set<T>(key: string, value: T): Promise<boolean> {
     try {
-      if (Platform.OS === 'web' && typeof window !== 'undefined' && window.localStorage) {
+      if (
+        Platform.OS === "web" &&
+        typeof window !== "undefined" &&
+        window.localStorage
+      ) {
         // Use localStorage on web
         window.localStorage.setItem(key, JSON.stringify(value));
         return true;
@@ -50,7 +57,11 @@ class StorageService {
   // Generic remove method
   async remove(key: string): Promise<boolean> {
     try {
-      if (Platform.OS === 'web' && typeof window !== 'undefined' && window.localStorage) {
+      if (
+        Platform.OS === "web" &&
+        typeof window !== "undefined" &&
+        window.localStorage
+      ) {
         // Use localStorage on web
         window.localStorage.removeItem(key);
         return true;
@@ -68,9 +79,13 @@ class StorageService {
   // Generic clear method
   async clear(): Promise<boolean> {
     try {
-      if (Platform.OS === 'web' && typeof window !== 'undefined' && window.localStorage) {
+      if (
+        Platform.OS === "web" &&
+        typeof window !== "undefined" &&
+        window.localStorage
+      ) {
         // Clear only our app's keys on web
-        Object.values(STORAGE_KEYS).forEach(key => {
+        Object.values(STORAGE_KEYS).forEach((key) => {
           window.localStorage.removeItem(key);
         });
         return true;
@@ -80,7 +95,7 @@ class StorageService {
         return true;
       }
     } catch (error) {
-      console.error('Error clearing storage', error);
+      console.error("Error clearing storage", error);
       return false;
     }
   }
@@ -91,7 +106,10 @@ class StorageService {
       const result = (await this.get<string[]>(STORAGE_KEYS.FAVORITES)) || [];
       return result;
     } catch (error) {
-      console.error(`Error getting item from storage: ${STORAGE_KEYS.FAVORITES}`, error);
+      console.error(
+        `Error getting item from storage: ${STORAGE_KEYS.FAVORITES}`,
+        error
+      );
       return [];
     }
   }
@@ -111,28 +129,30 @@ class StorageService {
 
   async removeFromFavorites(productId: string): Promise<boolean> {
     const favorites = await this.getFavorites();
-    const filteredFavorites = favorites.filter(id => id !== productId);
+    const filteredFavorites = favorites.filter((id) => id !== productId);
     return this.setFavorites(filteredFavorites);
   }
 
   async toggleFavorite(productId: string): Promise<boolean> {
     try {
       const favorites = await this.getFavorites();
-      
+
       if (favorites.includes(productId)) {
         return this.removeFromFavorites(productId);
       } else {
         return this.addToFavorites(productId);
       }
     } catch (error) {
-      console.error('Storage: Error in toggleFavorite:', error);
+      console.error("Storage: Error in toggleFavorite:", error);
       return false;
     }
   }
 
   // User preferences methods
   async getUserPreferences(): Promise<Record<string, any>> {
-    return (await this.get<Record<string, any>>(STORAGE_KEYS.USER_PREFERENCES)) || {};
+    return (
+      (await this.get<Record<string, any>>(STORAGE_KEYS.USER_PREFERENCES)) || {}
+    );
   }
 
   async setUserPreferences(preferences: Record<string, any>): Promise<boolean> {
@@ -155,7 +175,7 @@ class StorageService {
 
   async addToSearchHistory(query: string): Promise<boolean> {
     const history = await this.getSearchHistory();
-    const filteredHistory = history.filter(item => item !== query);
+    const filteredHistory = history.filter((item) => item !== query);
     filteredHistory.unshift(query);
     // Keep only last 10 searches
     const limitedHistory = filteredHistory.slice(0, 10);
