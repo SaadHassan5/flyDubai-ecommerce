@@ -17,6 +17,7 @@ import { getCurrentBreakpoint } from '../../src/constants/spacing';
 import { useSearchHistory } from '../../src/hooks/useStorage';
 import { useApp, useProducts, useIsLoading, useError, useCart } from '../../src/store';
 import { Product } from '../../src/types';
+import { API_KEY, API_URL } from '@env';
 
 export default function ProductsScreen() {
   const router = useRouter();

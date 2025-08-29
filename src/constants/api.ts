@@ -1,16 +1,17 @@
+import { API_KEY, API_URL } from '@env';
 import { ENV } from '../config/env';
 
 
 export const API_CONFIG = {
-  BASE_URL: ENV.API_URL,
-  PRODUCTS_ENDPOINT: ENV.API_KEY,
+  BASE_URL: API_KEY,
+  PRODUCTS_ENDPOINT: API_KEY,
   TIMEOUT: 10000,
   RETRY_ATTEMPTS: 3,
 } as const;
 
 // API URLs
 export const API_URLS = {
-  PRODUCTS: `${API_CONFIG.BASE_URL}${API_CONFIG.PRODUCTS_ENDPOINT}`,
+  PRODUCTS: `${API_URL}${API_KEY}`,
 } as const;
 
 // HTTP Methods
